@@ -12,56 +12,38 @@ const index = async(_req:Request , res:Response) => {
   res.json(ArtPieces)
 }
 
+const show = async (req: Request, res: Response) => {
+  const ArtPiece = await store.show(req.body.id)
+  res.json(ArtPiece)
+}
+
+const create = async (req: Request, res: Response) => {
+  try {
+      const ArtPiece: ArtPiece = {
+        title: req.body.title,
+        category: req.body.category,
+        rate: req.body.rate
+      }
+
+        const newArtPiece = await store.create(ArtPiece)
+        res.json(newArtPiece)
+    } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
+}
+
+const destroy = async (req: Request, res: Response) => {
+    const deleted = await store.delete(req.body.id)
+    res.json(deleted)
+}
+
 
 const galleryRoutes = (Art: express.Application) => {
   Art.get('/art', index)
-
-  Art.get('/art/:id', (_req: Request, res: Response):void => {
-    try {
-        res.send('this is the SHOW route')
-    } catch (err) {
-        res.status(400)
-        res.json(err)
-    }
-  })
-
-  Art.post('/art', (req: Request, res: Response):void => {
-    const Art: ArtPiece = {
-      title: req.body.title,
-      category: req.body.category,
-      rate: req.body.rate
-    }
-    try {
-      res.send('this is the CREATE route')
-    } catch (err) {
-      res.status(400)
-      res.json(err)
-    }
-  })
-
-  Art.put('/art/:id', (req: Request, res: Response):void => {
-    const ArtPiece: ArtPiece = {
-      id: req.params.id, 
-      title: req.body.title,
-      category: req.body.category,
-      rate: req.body.rate
-    }
-    try {
-      res.send('this is the EDIT route')
-    } catch (err) {
-      res.status(400)
-      res.json(err)
-    }
-  })
-
-  Art.delete('/art/:id', (_req: Request, res: Response) => {
-    try {
-        res.send('this is the DELETE route')
-    } catch (err) {
-        res.status(400)
-        res.json(err)
-    }
-  })
+  Art.get('/art/:id', show)
+  Art.post('/art', create)
+  Art.delete('/art', destroy)
 }
 
 
