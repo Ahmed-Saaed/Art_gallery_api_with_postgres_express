@@ -9,7 +9,7 @@ export type User = {
   password: string;
 }
 
-const {BCRYPT_PASSWORD:pepper,saltRounds} = process.env
+const {BCRYPT_PASSWORD:pepper,SALT_ROUNDS:saltRounds} = process.env
 
 
 export class Users {
@@ -70,7 +70,7 @@ export class Users {
 
     const result = await conn.query(sql, [username])
 
-    console.log(password+pepper)
+    // console.log(password+pepper)
 
     if(result.rows.length) {
 

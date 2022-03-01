@@ -19,15 +19,15 @@ describe("ArtPiece Model", () => {
     expect(store.create).toBeDefined();
   });
 
-  // it('should have a update method', () => {
-  //   expect(store.update).toBeDefined();
-  // });
+  it('should have a update method', () => {
+    expect(store.update).toBeDefined();
+  });
 
   it('should have a delete method', () => {
     expect(store.delete).toBeDefined();
   });
 
-  it('create method should add a ArtPiece', async () => {
+  it('is a create method that should add a ArtPiece', async () => {
     // @ts-ignore
     const result = await store.create({
       title: 'Die Hard',
@@ -35,8 +35,7 @@ describe("ArtPiece Model", () => {
       rate: 6,
     });
 
-  expect(result).toEqual(
-    {  
+  expect(result).toEqual({  
       id: 1,
       title: 'Die Hard',
       category: 'Action',
@@ -44,7 +43,7 @@ describe("ArtPiece Model", () => {
     });
   });
 
-  it('show method should return the correct ArtPiece', async () => {
+  it('is an show method that should return the correct ArtPiece', async () => {
     const result = await store.show("1");
     expect(result).toEqual({
       id: 1,
@@ -54,7 +53,23 @@ describe("ArtPiece Model", () => {
     });
   });
 
-  it('delete method should remove the ArtPiece', async () => {
+  it('it is an update method which should update the ArtPiece', async () => {
+    const result = await store.update({
+      id: 1,
+      title: 'the mask',
+      category: 'comedy',
+      rate: 8,
+    });
+
+    expect(result).toEqual({
+      id: 1,
+      title: 'the mask',
+      category: 'comedy',
+      rate: 8,
+    });
+  });
+
+  it('is a delete method which should remove the ArtPiece', async () => {
     store.delete("1");
     const result = await store.index()
 

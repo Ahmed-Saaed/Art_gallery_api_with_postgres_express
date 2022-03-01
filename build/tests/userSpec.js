@@ -39,11 +39,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var gallery_1 = require("../models/gallery");
+var user_1 = require("../models/user");
+var bcrypt_1 = __importDefault(require("bcrypt"));
 // @ts-ignore
 var db_migrate_1 = __importDefault(require("db-migrate"));
-var store = new gallery_1.gallery();
-describe("ArtPiece Model", function () {
+var store = new user_1.Users();
+var _a = process.env, pepper = _a.BCRYPT_PASSWORD, saltRounds = _a.SALT_ROUNDS;
+var testPassword = '1234abc';
+describe("User Model", function () {
     it('should have an index method', function () {
         expect(store.index).toBeDefined();
     });
@@ -53,73 +56,50 @@ describe("ArtPiece Model", function () {
     it('should have a create method', function () {
         expect(store.create).toBeDefined();
     });
-    it('should have a update method', function () {
-        expect(store.update).toBeDefined();
-    });
+    // it('should have a update method', () => {
+    //   expect(store.update).toBeDefined();
+    // });
     it('should have a delete method', function () {
         expect(store.delete).toBeDefined();
     });
-    it('is a create method that should add a ArtPiece', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result;
+    it('is a create method which should add a user', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result, hash;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, store.create({
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6,
+                        username: 'ahmed',
+                        password: testPassword,
                     })];
                 case 1:
                     result = _a.sent();
+                    hash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
                     expect(result).toEqual({
                         id: 1,
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6
+                        username: 'ahmed',
+                        password: hash,
                     });
                     return [2 /*return*/];
             }
         });
     }); });
-    it('is an show method that should return the correct ArtPiece', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result;
+    it('is a show method which should return the correct user', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result, hash;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, store.show("1")];
                 case 1:
                     result = _a.sent();
+                    hash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
                     expect(result).toEqual({
                         id: 1,
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6,
+                        username: 'ahmed',
+                        password: hash,
                     });
                     return [2 /*return*/];
             }
         });
     }); });
-    it('it is an update method which should update the ArtPiece', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, store.update({
-                        id: 1,
-                        title: 'the mask',
-                        category: 'comedy',
-                        rate: 4,
-                    })];
-                case 1:
-                    result = _a.sent();
-                    expect(result).toEqual({
-                        id: 1,
-                        title: 'the mask',
-                        category: 'comedy',
-                        rate: 4,
-                    });
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('is a delete method which should remove the ArtPiece', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('is a delete method which should remove the user', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -129,6 +109,23 @@ describe("ArtPiece Model", function () {
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual([]);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('is an authenticate method which should verfiy the user', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result, hash;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, store.authenticate('ahmed', testPassword)];
+                case 1:
+                    result = _a.sent();
+                    hash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
+                    expect(result).toEqual({
+                        id: 1,
+                        username: 'ahmed',
+                        password: hash,
+                    });
                     return [2 /*return*/];
             }
         });

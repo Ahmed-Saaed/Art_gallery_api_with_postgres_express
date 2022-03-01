@@ -42,13 +42,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var database_1 = __importDefault(require("../database"));
-var _a = process.env, pepper = _a.BCRYPT_PASSWORD, saltRounds = _a.saltRounds;
+var _a = process.env, pepper = _a.BCRYPT_PASSWORD, saltRounds = _a.SALT_ROUNDS;
 var Users = /** @class */ (function () {
     function Users() {
     }
+    Users.prototype.index = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'select * from users';
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("cannot get the User ".concat(err_1));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Users.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'SELECT * FROM users WHERE id=($1)';
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_2 = _a.sent();
+                        throw new Error("Could not find User ".concat(id, ". Error: ").concat(err_2));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Users.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, hash, result, user, err_1;
+            var conn, sql, hash, result, user, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -65,14 +113,13 @@ var Users = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, user];
                     case 3:
-                        err_1 = _a.sent();
-                        throw new Error("unable create user (".concat(u.username, "): ").concat(err_1));
+                        err_3 = _a.sent();
+                        throw new Error("unable create user (".concat(u.username, "): ").concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    // equal show method in gallery 
     Users.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, user;
@@ -82,10 +129,12 @@ var Users = /** @class */ (function () {
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT password_digest FROM users WHERE username=($1)';
-                        return [4 /*yield*/, conn.query(sql, [username])];
+                        return [4 /*yield*/, conn.query(sql, [username])
+                            // console.log(password+pepper)
+                        ];
                     case 2:
                         result = _a.sent();
-                        console.log(password + pepper);
+                        // console.log(password+pepper)
                         if (result.rows.length) {
                             user = result.rows[0];
                             if (bcrypt_1.default.compareSync(password + pepper, user.password_digest)) {
@@ -93,6 +142,31 @@ var Users = /** @class */ (function () {
                             }
                         }
                         return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    Users.prototype.delete = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, User, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'DELETE FROM users WHERE id=($1)';
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        User = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, User];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("Could not delete User ".concat(id, ". Error: ").concat(err_4));
+                    case 4: return [2 /*return*/];
                 }
             });
         });

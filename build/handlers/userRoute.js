@@ -39,64 +39,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var gallery_1 = require("../models/gallery");
-var verifyAuth_1 = __importDefault(require("../middlewares/verifyAuth"));
-// const Art = express.Router();
-var store = new gallery_1.gallery();
+var user_1 = require("../models/user");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var store = new user_1.Users();
+var userRoutes = function (app) {
+    app.get('/users', index);
+    app.get('/users/{:id}', show);
+    app.post('/users', create);
+    app.delete('/users', destroy);
+    app.post('/users/authenticate', authenticate);
+};
+// the methods
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPieces;
+    var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, store.index()];
             case 1:
-                ArtPieces = _a.sent();
-                res.json(ArtPieces);
+                users = _a.sent();
+                res.json(users);
                 return [2 /*return*/];
         }
     });
 }); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPiece;
+var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.params.id)];
+            case 0: return [4 /*yield*/, store.show(_req.body.id)];
             case 1:
-                ArtPiece = _a.sent();
-                res.json(ArtPiece);
+                user = _a.sent();
+                res.json(user);
                 return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPiece, newArtPiece, err_1;
+    var user, newUser, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                ArtPiece = {
-                    title: req.body.title,
-                    category: req.body.category,
-                    rate: req.body.rate
+                user = {
+                    username: req.body.username,
+                    password: req.body.password,
                 };
-                return [4 /*yield*/, store.create(ArtPiece)];
+                _a.label = 1;
             case 1:
-                newArtPiece = _a.sent();
-                res.json(newArtPiece);
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(user)];
             case 2:
+                newUser = _a.sent();
+                token = jsonwebtoken_1.default.sign({ user: newUser }, process.env.TOKEN_SECRET);
+                res.json(token);
+                return [3 /*break*/, 4];
+            case 3:
                 err_1 = _a.sent();
                 res.status(400);
-                res.json(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                // @ts-ignore
+                res.json(err_1 + user);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var destroy = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var deleted;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.delete(req.params.id)];
+            case 0: return [4 /*yield*/, store.delete(_req.body.id)];
             case 1:
                 deleted = _a.sent();
                 res.json(deleted);
@@ -104,10 +114,32 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
         }
     });
 }); };
-var galleryRoutes = function (Art) {
-    Art.get('/art/all', index);
-    Art.get('/art?id=', show);
-    Art.post('/art', verifyAuth_1.default, create);
-    Art.delete('/art?id=', verifyAuth_1.default, destroy);
-};
-exports.default = galleryRoutes;
+var authenticate = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, u, token, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = {
+                    username: _req.body.username,
+                    password: _req.body.password,
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.authenticate(user.username, user.password)];
+            case 2:
+                u = _a.sent();
+                token = jsonwebtoken_1.default.sign({ user: u }, process.env.TOKEN_SECRET);
+                res.json(token);
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
+                res.status(401);
+                // @ts-ignore
+                res.json(err_2 + user);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.default = userRoutes;
