@@ -1,18 +1,18 @@
-// @ts-ignore
-import client from "../database";
+import Client from "../database";
 
 export type ArtPiece = {
-  id ?: string ;
+  id ?: number;
   title: string;
   category: string;
   rate: number
 }
 
+
 export class gallery {
   async index():Promise<ArtPiece[]>{
     try{
       // @ts-ignore
-      const conn = await client.connect();
+      const conn = await Client.connect();
       const sql = 'select * from gallery'
       const result = await conn.query(sql)
       conn.release()
@@ -25,7 +25,7 @@ export class gallery {
     try {
     const sql = 'SELECT * FROM gallery WHERE id=($1)'
     // @ts-ignore
-    const conn = await client.connect()
+    const conn = await Client.connect()
 
     const result = await conn.query(sql, [id])
 
@@ -41,7 +41,7 @@ export class gallery {
       try {
     const sql = 'INSERT INTO gallery (title, category, rate) VALUES ($1, $2, $3) RETURNING *'
     // @ts-ignore
-    const conn = await client.connect()
+    const conn = await Client.connect()
 
     const result = await conn
         .query(sql, [b.title, b.category, b.rate])
@@ -60,7 +60,7 @@ export class gallery {
       try {
     const sql = 'DELETE FROM gallery WHERE id=($1)'
     // @ts-ignore
-    const conn = await client.connect()
+    const conn = await Client.connect()
 
     const result = await conn.query(sql, [id])
 

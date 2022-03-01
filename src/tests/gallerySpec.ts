@@ -1,4 +1,7 @@
 import {ArtPiece, gallery} from '../models/gallery'
+  // @ts-ignore
+import DBMigrate from "db-migrate";
+
 
 const store = new gallery();
 
@@ -31,10 +34,10 @@ describe("ArtPiece Model", () => {
       category: 'Action',
       rate: 6,
     });
-    // @ts-ignore
+
   expect(result).toEqual(
     {  
-      id: '1',
+      id: 1,
       title: 'Die Hard',
       category: 'Action',
       rate: 6
@@ -44,8 +47,7 @@ describe("ArtPiece Model", () => {
   it('show method should return the correct ArtPiece', async () => {
     const result = await store.show("1");
     expect(result).toEqual({
-      // @ts-ignore
-      id: "1",
+      id: 1,
       title: 'Die Hard',
       category: 'Action',
       rate: 6,
@@ -57,5 +59,11 @@ describe("ArtPiece Model", () => {
     const result = await store.index()
 
     expect(result).toEqual([]);
+  });
+
+  afterAll(async function clearTestData () {
+    let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
+    await dbMigrate.reset();
+    await dbMigrate.up();
   });
 });
