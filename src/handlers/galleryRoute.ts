@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
-import {ArtPiece, gallery} from '../models/gallery'
+import {ArtPiece, gallery} from '../models/gallery';
+import verifyAuthToken from '../middlewares/verifyAuth';
+
+
 
 
 
@@ -13,7 +16,7 @@ const index = async(_req:Request , res:Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-  const ArtPiece = await store.show(req. query.id as string)
+  const ArtPiece = await store.show(req.params.id as string)
   res.json(ArtPiece)
 }
 
@@ -34,7 +37,7 @@ const create = async (req: Request, res: Response) => {
 }
 
 const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.query.id as string)
+    const deleted = await store.delete(req.params.id as string)
     res.json(deleted)
 }
 
@@ -42,8 +45,8 @@ const destroy = async (req: Request, res: Response) => {
 const galleryRoutes = (Art: express.Application) => {
   Art.get('/art/all', index)
   Art.get('/art?id=', show)
-  Art.post('/art', create)
-  Art.delete('/art?id=', destroy)
+  Art.post('/art', verifyAuthToken, create)
+  Art.delete('/art?id=', verifyAuthToken, destroy)
 }
 
 
