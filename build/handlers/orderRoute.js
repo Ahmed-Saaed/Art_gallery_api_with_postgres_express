@@ -35,60 +35,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var gallery_1 = require("../models/gallery");
-var verifyAuth_1 = __importDefault(require("../middlewares/verifyAuth"));
-// const Art = express.Router();
-var store = new gallery_1.gallery();
-var galleryRoutes = function (Art) {
-    Art.get('/art', index);
-    Art.get('/art/:id', show);
-    Art.post('/art', verifyAuth_1.default, create);
-    Art.delete('/art/:id', verifyAuth_1.default, destroy);
-    Art.put('/art/:id', verifyAuth_1.default, update);
+var order_1 = require("../models/order");
+var store = new order_1.Orders();
+var orderRoutes = function (app) {
+    app.get('/orders', index);
+    app.get('/orders/:id', show);
+    app.post('/orders', create);
+    // add product
+    app.post('/orders/:id/products', addProduct);
 };
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPieces;
+    var orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, store.index()];
             case 1:
-                ArtPieces = _a.sent();
-                res.json(ArtPieces);
+                orders = _a.sent();
+                res.json(orders);
                 return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPiece;
+    var order;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, store.show(req.params.id)];
             case 1:
-                ArtPiece = _a.sent();
-                res.json(ArtPiece);
+                order = _a.sent();
+                res.json(order);
                 return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPiece, newArtPiece, err_1;
+    var order, newOrder, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                ArtPiece = {
-                    title: req.body.title,
-                    category: req.body.category,
-                    rate: req.body.rate
+                order = {
+                    status: req.body.status,
+                    userId: req.body.userId
                 };
-                return [4 /*yield*/, store.create(ArtPiece)];
+                return [4 /*yield*/, store.create(order)];
             case 1:
-                newArtPiece = _a.sent();
-                res.json(newArtPiece);
+                newOrder = _a.sent();
+                res.json(newOrder);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -99,42 +93,29 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var ArtPiece, updatedArtPiece, err_2;
+var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderId, ArtId, quantity, addedProduct, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                ArtPiece = {
-                    id: parseInt(req.params.id),
-                    title: req.body.title,
-                    category: req.body.category,
-                    rate: req.body.rate
-                };
-                return [4 /*yield*/, store.update(ArtPiece)];
+                orderId = parseInt(req.params.id);
+                ArtId = parseInt(req.body.ArtId);
+                quantity = parseInt(req.body.quantity);
+                _a.label = 1;
             case 1:
-                updatedArtPiece = _a.sent();
-                res.json(updatedArtPiece);
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.addProduct(quantity, ArtId, orderId)];
             case 2:
+                addedProduct = _a.sent();
+                res.json(addedProduct);
+                return [3 /*break*/, 4];
+            case 3:
                 err_2 = _a.sent();
                 res.status(400);
                 res.json(err_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.delete(req.params.id)];
-            case 1:
-                deleted = _a.sent();
-                res.json(deleted);
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.default = galleryRoutes;
+exports.default = orderRoutes;

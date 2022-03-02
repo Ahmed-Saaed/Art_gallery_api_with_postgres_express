@@ -4,10 +4,17 @@ import verifyAuthToken from '../middlewares/verifyAuth';
 
 
 
-
-
 // const Art = express.Router();
 const store = new gallery();
+
+
+const galleryRoutes = (Art: express.Application) => {
+  Art.get('/art', index)
+  Art.get('/art/:id', show)
+  Art.post('/art', verifyAuthToken, create)
+  Art.delete('/art/:id', verifyAuthToken, destroy)
+  Art.put('/art/:id', verifyAuthToken, update)
+}
 
 
 const index = async(_req:Request , res:Response) => {
@@ -36,18 +43,30 @@ const create = async (req: Request, res: Response) => {
     }
 }
 
+const update = async (req: Request, res: Response) => {
+  try {
+      const ArtPiece: ArtPiece = {
+        id: parseInt(req.params.id),
+        title: req.body.title,
+        category: req.body.category,
+        rate: req.body.rate
+      }
+
+        const updatedArtPiece = await store.update(ArtPiece)
+        res.json(updatedArtPiece)
+    } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
+}
+
 const destroy = async (req: Request, res: Response) => {
     const deleted = await store.delete(req.params.id as string)
     res.json(deleted)
 }
 
 
-const galleryRoutes = (Art: express.Application) => {
-  Art.get('/art/all', index)
-  Art.get('/art?id=', show)
-  Art.post('/art', verifyAuthToken, create)
-  Art.delete('/art?id=', verifyAuthToken, destroy)
-}
+
 
 
 export default galleryRoutes;

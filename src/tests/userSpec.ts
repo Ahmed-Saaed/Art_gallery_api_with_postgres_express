@@ -1,6 +1,5 @@
 import {User, Users} from '../models/user'
 import bcrypt from 'bcrypt';
-
 // @ts-ignore
 import DBMigrate from "db-migrate";
 
