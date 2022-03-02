@@ -3,33 +3,33 @@
 // import DBMigrate from "db-migrate";
 
 
-// const store = new gallery();
+// const galleryStore = new gallery();
 
 
 // describe("ArtPiece Model", () => {
 //   it('should have an index method', () => {
-//     expect(store.index).toBeDefined();
+//     expect(galleryStore.index).toBeDefined();
 //   });
 
 //   it('should have a show method', () => {
-//     expect(store.show).toBeDefined();
+//     expect(galleryStore.show).toBeDefined();
 //   });
 
 //   it('should have a create method', () => {
-//     expect(store.create).toBeDefined();
+//     expect(galleryStore.create).toBeDefined();
 //   });
 
 //   it('should have a update method', () => {
-//     expect(store.update).toBeDefined();
+//     expect(galleryStore.update).toBeDefined();
 //   });
 
 //   it('should have a delete method', () => {
-//     expect(store.delete).toBeDefined();
+//     expect(galleryStore.delete).toBeDefined();
 //   });
 
 //   it('is a create method that should add a ArtPiece', async () => {
 //     // @ts-ignore
-//     const result = await store.create({
+//     const result = await galleryStore.create({
 //       title: 'Die Hard',
 //       category: 'Action',
 //       rate: 6,
@@ -44,7 +44,7 @@
 //   });
 
 //   it('is an show method that should return the correct ArtPiece', async () => {
-//     const result = await store.show("1");
+//     const result = await galleryStore.show("1");
 //     expect(result).toEqual({
 //       id: 1,
 //       title: 'Die Hard',
@@ -54,7 +54,7 @@
 //   });
 
 //   it('it is an update method which should update the ArtPiece', async () => {
-//     const result = await store.update({
+//     const result = await galleryStore.update({
 //       id: 1,
 //       title: 'the mask',
 //       category: 'comedy',
@@ -70,8 +70,8 @@
 //   });
 
 //   it('is a delete method which should remove the ArtPiece', async () => {
-//     store.delete("1");
-//     const result = await store.index()
+//     galleryStore.delete("1");
+//     const result = await galleryStore.index()
 
 //     expect(result).toEqual([]);
 //   });

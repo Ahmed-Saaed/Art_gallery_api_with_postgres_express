@@ -3,34 +3,34 @@ import bcrypt from 'bcrypt';
 // @ts-ignore
 import DBMigrate from "db-migrate";
 
-const store = new Users();
+const users = new Users();
 const {BCRYPT_PASSWORD:pepper,SALT_ROUNDS:saltRounds} = process.env
 const testPassword  = '1234abc';
 
 describe("User Model", () => {
   it('should have an index method', () => {
-    expect(store.index).toBeDefined();
+    expect(users.index).toBeDefined();
   });
 
   it('should have a show method', () => {
-    expect(store.show).toBeDefined();
+    expect(users.show).toBeDefined();
   });
 
   it('should have a create method', () => {
-    expect(store.create).toBeDefined();
+    expect(users.create).toBeDefined();
   });
 
   // it('should have a update method', () => {
-  //   expect(store.update).toBeDefined();
+  //   expect(users.update).toBeDefined();
   // });
 
   it('should have a delete method', () => {
-    expect(store.delete).toBeDefined();
+    expect(users.delete).toBeDefined();
   });
 
   it('is a create method which should add a user', async () => {
     // @ts-ignore
-    const result = await store.create({
+    const result = await users.create({
       username: 'ahmed',
       password: testPassword,
     });
@@ -49,7 +49,7 @@ describe("User Model", () => {
   });
 
   it('is a show method which should return the correct user', async () => {
-    const result = await store.show("1");
+    const result = await users.show("1");
 
     const hash = bcrypt.hashSync(
       testPassword + pepper, 
@@ -64,14 +64,14 @@ describe("User Model", () => {
   });
 
   it('is a delete method which should remove the user', async () => {
-    store.delete("1");
-    const result = await store.index()
+    users.delete("1");
+    const result = await users.index()
 
     expect(result).toEqual([]);
   });
 
   it('is an authenticate method which should verfiy the user', async () => {
-    const result = await store.authenticate('ahmed', testPassword);
+    const result = await users.authenticate('ahmed', testPassword);
 
     const hash = bcrypt.hashSync(
       testPassword + pepper, 

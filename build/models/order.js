@@ -92,7 +92,7 @@ var Orders = /** @class */ (function () {
             });
         });
     };
-    Orders.prototype.create = function (b) {
+    Orders.prototype.create = function (o) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, conn, result, Order, err_3;
             return __generator(this, function (_a) {
@@ -104,7 +104,7 @@ var Orders = /** @class */ (function () {
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn
-                                .query(sql, [b.status, b.userId])];
+                                .query(sql, [o.status, o.userId])];
                     case 2:
                         result = _a.sent();
                         Order = result.rows[0];
@@ -112,7 +112,7 @@ var Orders = /** @class */ (function () {
                         return [2 /*return*/, Order];
                     case 3:
                         err_3 = _a.sent();
-                        throw new Error("Could not add new Order ".concat(b.status, "}. Error: ").concat(err_3));
+                        throw new Error("Could not add new Order ".concat(o.status, ". Error: ").concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });
