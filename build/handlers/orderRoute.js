@@ -61,7 +61,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     var order;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.params.id)];
+            case 0: return [4 /*yield*/, store.show(parseInt(req.params.id))];
             case 1:
                 order = _a.sent();
                 res.json(order);
@@ -94,13 +94,13 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orderId, ArtId, quantity, addedProduct, err_2;
+    var quantity, orderId, ArtId, addedProduct, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                quantity = parseInt(req.body.quantity);
                 orderId = parseInt(req.params.id);
                 ArtId = parseInt(req.body.ArtId);
-                quantity = parseInt(req.body.quantity);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);

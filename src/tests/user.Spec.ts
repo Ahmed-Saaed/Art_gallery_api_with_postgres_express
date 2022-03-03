@@ -20,9 +20,9 @@ describe("User Model", () => {
     expect(users.create).toBeDefined();
   });
 
-  // it('should have a update method', () => {
-  //   expect(users.update).toBeDefined();
-  // });
+  it('should have a update method', () => {
+    expect(users.update).toBeDefined();
+  });
 
   it('should have a delete method', () => {
     expect(users.delete).toBeDefined();
@@ -32,6 +32,8 @@ describe("User Model", () => {
     // @ts-ignore
     const result = await users.create({
       username: 'ahmed',
+      firstname: 'ahmed',
+      lastname: 'saaed',
       password: testPassword,
     });
 
@@ -42,8 +44,10 @@ describe("User Model", () => {
 
   expect(result).toEqual(
     {  
-      id: 1,
+      id: '1',
       username: 'ahmed',
+      firstname: 'ahmed',
+      lastname: 'saaed',
       password: hash,
     });
   });
@@ -51,15 +55,17 @@ describe("User Model", () => {
   it('is a show method which should return the correct user', async () => {
     const result = await users.show("1");
 
-    const hash = bcrypt.hashSync(
+    const sHash = bcrypt.hashSync(
       testPassword + pepper, 
       parseInt(saltRounds as string)
     );
 
     expect(result).toEqual({
-      id: 1,
+      id: '1',
       username: 'ahmed',
-      password: hash,
+      firstname: 'ahmed',
+      lastname: 'saaed',
+      password: sHash,
     });
   });
 
@@ -73,15 +79,42 @@ describe("User Model", () => {
   it('is an authenticate method which should verfiy the user', async () => {
     const result = await users.authenticate('ahmed', testPassword);
 
-    const hash = bcrypt.hashSync(
+    const aHash = bcrypt.hashSync(
       testPassword + pepper, 
       parseInt(saltRounds as string)
     );
 
     expect(result).toEqual({  
-      id: 1,
+      id: '1',
       username: 'ahmed',
-      password: hash,
+      firstname: 'ahmed',
+      lastname: 'saaed',
+      password: aHash,
+    });
+  });
+
+  it('is an update method which should update a user', async () => {
+    // @ts-ignore
+    const result = await users.update({
+      username: 'naira',
+      firstname: 'naira',
+      lastname: 'ahmed',
+      password: 'password',
+      id: '1',
+    });
+
+    const uHash = bcrypt.hashSync(
+      'password' + pepper, 
+      parseInt(saltRounds as string)
+    );
+
+  expect(result).toEqual(
+    {  
+      id: '1',
+      username: 'naira',
+      firstname: 'naira',
+      lastname: 'ahmed',
+      password: uHash,
     });
   });
 

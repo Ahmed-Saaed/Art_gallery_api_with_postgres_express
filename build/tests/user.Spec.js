@@ -43,30 +43,30 @@ var user_1 = require("../models/user");
 var bcrypt_1 = __importDefault(require("bcrypt"));
 // @ts-ignore
 var db_migrate_1 = __importDefault(require("db-migrate"));
-var store = new user_1.Users();
+var users = new user_1.Users();
 var _a = process.env, pepper = _a.BCRYPT_PASSWORD, saltRounds = _a.SALT_ROUNDS;
 var testPassword = '1234abc';
 describe("User Model", function () {
     it('should have an index method', function () {
-        expect(store.index).toBeDefined();
+        expect(users.index).toBeDefined();
     });
     it('should have a show method', function () {
-        expect(store.show).toBeDefined();
+        expect(users.show).toBeDefined();
     });
     it('should have a create method', function () {
-        expect(store.create).toBeDefined();
+        expect(users.create).toBeDefined();
     });
-    // it('should have a update method', () => {
-    //   expect(store.update).toBeDefined();
-    // });
+    it('should have a update method', function () {
+        expect(users.update).toBeDefined();
+    });
     it('should have a delete method', function () {
-        expect(store.delete).toBeDefined();
+        expect(users.delete).toBeDefined();
     });
     it('is a create method which should add a user', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, hash;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.create({
+                case 0: return [4 /*yield*/, users.create({
                         username: 'ahmed',
                         password: testPassword,
                     })];
@@ -83,17 +83,17 @@ describe("User Model", function () {
         });
     }); });
     it('is a show method which should return the correct user', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, hash;
+        var result, sHash;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.show("1")];
+                case 0: return [4 /*yield*/, users.show("1")];
                 case 1:
                     result = _a.sent();
-                    hash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
+                    sHash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
                     expect(result).toEqual({
                         id: 1,
                         username: 'ahmed',
-                        password: hash,
+                        password: sHash,
                     });
                     return [2 /*return*/];
             }
@@ -104,8 +104,8 @@ describe("User Model", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    store.delete("1");
-                    return [4 /*yield*/, store.index()];
+                    users.delete("1");
+                    return [4 /*yield*/, users.index()];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual([]);
@@ -114,17 +114,38 @@ describe("User Model", function () {
         });
     }); });
     it('is an authenticate method which should verfiy the user', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, hash;
+        var result, aHash;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.authenticate('ahmed', testPassword)];
+                case 0: return [4 /*yield*/, users.authenticate('ahmed', testPassword)];
                 case 1:
                     result = _a.sent();
-                    hash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
+                    aHash = bcrypt_1.default.hashSync(testPassword + pepper, parseInt(saltRounds));
                     expect(result).toEqual({
                         id: 1,
                         username: 'ahmed',
-                        password: hash,
+                        password: aHash,
+                    });
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('is an update method which should update a user', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result, uHash;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, users.update({
+                        username: 'heba',
+                        password: 'password',
+                        id: 1,
+                    })];
+                case 1:
+                    result = _a.sent();
+                    uHash = bcrypt_1.default.hashSync('password' + pepper, parseInt(saltRounds));
+                    expect(result).toEqual({
+                        id: 1,
+                        username: 'heba',
+                        password: uHash,
                     });
                     return [2 /*return*/];
             }

@@ -66,7 +66,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     var ArtPiece;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.params.id)];
+            case 0: return [4 /*yield*/, store.show(parseInt(req.params.id))];
             case 1:
                 ArtPiece = _a.sent();
                 res.json(ArtPiece);
@@ -82,8 +82,9 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 _a.trys.push([0, 2, , 3]);
                 ArtPiece = {
                     title: req.body.title,
+                    artist: req.body.artist,
                     category: req.body.category,
-                    rate: req.body.rate
+                    price: req.body.price
                 };
                 return [4 /*yield*/, store.create(ArtPiece)];
             case 1:
@@ -106,10 +107,11 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 ArtPiece = {
-                    id: parseInt(req.params.id),
+                    id: req.params.id,
                     title: req.body.title,
+                    artist: req.body.artist,
                     category: req.body.category,
-                    rate: req.body.rate
+                    price: req.body.price
                 };
                 return [4 /*yield*/, store.update(ArtPiece)];
             case 1:

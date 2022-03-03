@@ -64,17 +64,19 @@ describe("ArtPiece Model", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, galleryStore.create({
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6,
+                        title: 'monaliza',
+                        artist: 'davanci',
+                        category: 'Renaissance',
+                        price: 6,
                     })];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
-                        id: 1,
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6
+                        id: '1',
+                        title: 'monaliza',
+                        artist: 'davanci',
+                        category: 'Renaissance',
+                        price: 6
                     });
                     return [2 /*return*/];
             }
@@ -84,14 +86,15 @@ describe("ArtPiece Model", function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, galleryStore.show("1")];
+                case 0: return [4 /*yield*/, galleryStore.show(1)];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
-                        id: 1,
-                        title: 'Die Hard',
-                        category: 'Action',
-                        rate: 6,
+                        id: '1',
+                        title: 'monaliza',
+                        artist: 'davanci',
+                        category: 'Renaissance',
+                        price: 6,
                     });
                     return [2 /*return*/];
             }
@@ -102,18 +105,20 @@ describe("ArtPiece Model", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, galleryStore.update({
-                        id: 1,
-                        title: 'the mask',
-                        category: 'comedy',
-                        rate: 8,
+                        id: '1',
+                        title: 'the scream',
+                        artist: 'munch',
+                        category: 'Expressionism',
+                        price: 8,
                     })];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
-                        id: 1,
-                        title: 'the mask',
-                        category: 'comedy',
-                        rate: 8,
+                        id: '1',
+                        title: 'the scream',
+                        artist: 'munch',
+                        category: 'Expressionism',
+                        price: 8,
                     });
                     return [2 /*return*/];
             }

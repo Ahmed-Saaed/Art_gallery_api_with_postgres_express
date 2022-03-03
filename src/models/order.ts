@@ -26,7 +26,7 @@ export class Orders {
       throw new Error(`cannot get the Order ${err}`)
     }
   }
-  async show(id: string): Promise<Order> {
+  async show(id:number): Promise<Order> {
     try {
     const sql = 'SELECT * FROM orders WHERE id=($1)'
     // @ts-ignore
@@ -68,7 +68,7 @@ export class Orders {
       const conn = await Client.connect()
 
       const result = await conn
-          .query(sql, [quantity, , ArtId, orderId])
+          .query(sql, [quantity, ArtId, orderId])
 
       const order = result.rows[0]
 

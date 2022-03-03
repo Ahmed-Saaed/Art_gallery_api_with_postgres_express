@@ -1,10 +1,11 @@
 import Client from "../database";
 
 export type ArtPiece = {
-  id ?: number;
+  id ?: string;
   title: string;
+  artist:string;
+  price: number;
   category: string;
-  rate: number
 }
 
 
@@ -21,7 +22,7 @@ export class gallery {
       throw new Error(`cannot get the ArtPiece ${err}`)
     }
   }
-  async show(id: string): Promise<ArtPiece> {
+  async show(id:number): Promise<ArtPiece> {
     try {
     const sql = 'SELECT * FROM gallery WHERE id=($1)'
     // @ts-ignore
@@ -39,12 +40,12 @@ export class gallery {
 
   async create(b: ArtPiece): Promise<ArtPiece> {
       try {
-    const sql = 'INSERT INTO gallery (title, category, rate) VALUES ($1, $2, $3) RETURNING *'
+    const sql = 'INSERT INTO gallery (title,artist, category, price) VALUES ($1, $2, $3, $4) RETURNING *'
     // @ts-ignore
     const conn = await Client.connect()
 
     const result = await conn
-        .query(sql, [b.title, b.category, b.rate])
+        .query(sql, [b.title, b.artist, b.category, b.price])
 
     const ArtPiece = result.rows[0]
 
@@ -58,12 +59,12 @@ export class gallery {
 
   async update(b: ArtPiece): Promise<ArtPiece> {
       try {
-    const sql = `UPDATE gallery SET title= $1 ,category= $2 ,rate = $3 WHERE id = $4 RETURNING *`
+    const sql = `UPDATE gallery SET title= $1 , artist=$2, category= $3 ,price = $4 WHERE id = $5 RETURNING *`
     // @ts-ignore
     const conn = await Client.connect()
 
     const result = await conn
-        .query(sql, [b.title, b.category, b.rate,b.id])
+        .query(sql, [b.title, b.artist, b.category, b.price, b.id])
 
     const ArtPiece = result.rows[0]
 

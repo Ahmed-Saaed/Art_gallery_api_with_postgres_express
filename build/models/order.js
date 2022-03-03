@@ -130,7 +130,7 @@ var Orders = /** @class */ (function () {
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn
-                                .query(sql, [quantity, , ArtId, orderId])];
+                                .query(sql, [quantity, ArtId, orderId])];
                     case 2:
                         result = _a.sent();
                         order = result.rows[0];

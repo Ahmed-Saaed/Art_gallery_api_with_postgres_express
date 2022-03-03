@@ -25,7 +25,7 @@ describe("Orders Model", () => {
   });
 
   it('is an show method that should return the correct ArtPiece', async () => {
-    const result = await store.show("1");
+    const result = await store.show(1);
     expect(result).toEqual({
       id: 1,
       status:'pending',

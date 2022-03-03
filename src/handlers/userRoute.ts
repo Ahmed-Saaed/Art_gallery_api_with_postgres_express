@@ -8,9 +8,10 @@ const store = new Users();
 
 const userRoutes = (app: express.Application) => {
   app.get('/users', index)
-  app.get('/users/{:id}', show)
+  app.get('/users/:id', show)
   app.post('/users', create)
-  app.delete('/users' ,destroy)
+  app.delete('/users/:id', destroy)
+  app.put('/users/:id', update)
   app.post('/users/authenticate', authenticate)
 }
 
@@ -23,13 +24,15 @@ const index = async (_req: Request, res: Response) => {
 }
 
 const show = async (_req: Request, res: Response) => {
-  const user = await store.show(_req.body.id)
+  const user = await store.show(_req.params.id)
   res.json(user)
 }
 
 const create = async (req: Request, res: Response) => {
   const user: User = {
       username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       password: req.body.password,
   }
   try {
@@ -44,12 +47,30 @@ const create = async (req: Request, res: Response) => {
 }
 
 const destroy = async (_req: Request, res: Response) => {
-  const deleted = await store.delete(_req.body.id)
+  const deleted = await store.delete(_req.params.id)
   res.json(deleted)
 }
 
+const update = async (req: Request, res: Response) => {
+  try {
+      const user: User = {
+        id: req.params.id,
+        username: req.body.username,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: req.body.password
+      }
+
+        const updatedUser = await store.update(user)
+        res.json(updatedUser)
+    } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
+}
+
 const authenticate = async (_req: Request, res: Response) => {
-  const user: User = {
+  const user = {
     username: _req.body.username,
     password: _req.body.password,
   }

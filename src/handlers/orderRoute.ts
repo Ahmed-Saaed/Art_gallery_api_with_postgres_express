@@ -17,7 +17,7 @@ const index = async(_req:Request , res:Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-  const order = await store.show(req.params.id as string)
+  const order = await store.show(parseInt(req.params.id))
   res.json(order)
 }
 
@@ -37,9 +37,9 @@ const create = async (req: Request, res: Response) => {
 }
 
 const addProduct = async (req: Request, res: Response) => {
+  const quantity: number = parseInt(req.body.quantity)
   const orderId: number = parseInt(req.params.id)
   const ArtId: number = parseInt(req.body.ArtId)
-  const quantity: number = parseInt(req.body.quantity)
 
   try {
     const addedProduct = await store.addProduct(quantity, ArtId, orderId)

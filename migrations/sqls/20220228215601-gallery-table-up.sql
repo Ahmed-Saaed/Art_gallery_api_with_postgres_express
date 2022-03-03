@@ -1,1 +1,1 @@
-CREATE TABLE gallery (title VARCHAR(100),category VARCHAR(100),rate integer,id SERIAL PRIMARY KEY);
+CREATE TABLE gallery (id BIGSERIAL PRIMARY KEY, title VARCHAR(100),artist VARCHAR(100), category VARCHAR(100),price integer); 

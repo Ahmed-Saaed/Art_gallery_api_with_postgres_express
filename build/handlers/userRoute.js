@@ -44,9 +44,10 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var store = new user_1.Users();
 var userRoutes = function (app) {
     app.get('/users', index);
-    app.get('/users/{:id}', show);
+    app.get('/users/:id', show);
     app.post('/users', create);
-    app.delete('/users', destroy);
+    app.delete('/users/:id', destroy);
+    app.put('/users/:id', update);
     app.post('/users/authenticate', authenticate);
 };
 // the methods
@@ -66,7 +67,7 @@ var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, funct
     var user;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(_req.body.id)];
+            case 0: return [4 /*yield*/, store.show(_req.params.id)];
             case 1:
                 user = _a.sent();
                 res.json(user);
@@ -106,7 +107,7 @@ var destroy = function (_req, res) { return __awaiter(void 0, void 0, void 0, fu
     var deleted;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.delete(_req.body.id)];
+            case 0: return [4 /*yield*/, store.delete(_req.params.id)];
             case 1:
                 deleted = _a.sent();
                 res.json(deleted);
@@ -114,8 +115,33 @@ var destroy = function (_req, res) { return __awaiter(void 0, void 0, void 0, fu
         }
     });
 }); };
+var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, updatedUser, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user = {
+                    id: parseInt(req.params.id),
+                    username: req.body.username,
+                    password: req.body.password
+                };
+                return [4 /*yield*/, store.update(user)];
+            case 1:
+                updatedUser = _a.sent();
+                res.json(updatedUser);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var authenticate = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, u, token, err_2;
+    var user, u, token, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -133,10 +159,10 @@ var authenticate = function (_req, res) { return __awaiter(void 0, void 0, void 
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _a.sent();
+                err_3 = _a.sent();
                 res.status(401);
                 // @ts-ignore
-                res.json(err_2 + user);
+                res.json(err_3 + user);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

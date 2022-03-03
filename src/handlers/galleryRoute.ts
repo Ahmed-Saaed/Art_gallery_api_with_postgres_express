@@ -23,7 +23,7 @@ const index = async(_req:Request , res:Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-  const ArtPiece = await store.show(req.params.id as string)
+  const ArtPiece = await store.show(parseInt(req.params.id))
   res.json(ArtPiece)
 }
 
@@ -31,8 +31,9 @@ const create = async (req: Request, res: Response) => {
   try {
       const ArtPiece: ArtPiece = {
         title: req.body.title,
+        artist: req.body.artist,
         category: req.body.category,
-        rate: req.body.rate
+        price: req.body.price
       }
 
         const newArtPiece = await store.create(ArtPiece)
@@ -46,10 +47,11 @@ const create = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
   try {
       const ArtPiece: ArtPiece = {
-        id: parseInt(req.params.id),
+        id: req.params.id,
         title: req.body.title,
+        artist: req.body.artist,
         category: req.body.category,
-        rate: req.body.rate
+        price: req.body.price
       }
 
         const updatedArtPiece = await store.update(ArtPiece)

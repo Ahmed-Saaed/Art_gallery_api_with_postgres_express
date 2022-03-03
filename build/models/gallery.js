@@ -99,12 +99,12 @@ var gallery = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'INSERT INTO gallery (title, category, rate) VALUES ($1, $2, $3) RETURNING *';
+                        sql = 'INSERT INTO gallery (title,artist, category, price) VALUES ($1, $2, $3, $4) RETURNING *';
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn
-                                .query(sql, [b.title, b.category, b.rate])];
+                                .query(sql, [b.title, b.artist, b.category, b.price])];
                     case 2:
                         result = _a.sent();
                         ArtPiece = result.rows[0];
@@ -125,12 +125,12 @@ var gallery = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = "UPDATE gallery SET title= $1 ,category= $2 ,rate = $3 WHERE id = $4 RETURNING *";
+                        sql = "UPDATE gallery SET title= $1 , artist=$2, category= $3 ,price = $4 WHERE id = $5 RETURNING *";
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn
-                                .query(sql, [b.title, b.category, b.rate, b.id])];
+                                .query(sql, [b.title, b.artist, b.category, b.price, b.id])];
                     case 2:
                         result = _a.sent();
                         ArtPiece = result.rows[0];

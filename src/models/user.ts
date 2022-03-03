@@ -4,8 +4,10 @@ import Client from "../database";
 
 
 export type User = {
-  id ?: number;
+  id ?: string;
   username: string;
+  firstname:string;
+  lastname:string;
   password: string;
 }
 
@@ -46,7 +48,7 @@ export class Users {
     try {
       
       const conn = await Client.connect()
-      const sql = 'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *'
+      const sql = 'INSERT INTO users (username, firstname, lastname, password_digest) VALUES($1, $2, $3, $4) RETURNING *'
 
       const hash = bcrypt.hashSync(
         u.password + pepper, 
@@ -61,6 +63,29 @@ export class Users {
       return user
     } catch(err) {
       throw new Error(`unable create user (${u.username}): ${err}`)
+    } 
+  }
+
+  async update(u: User): Promise<User> {
+    try {
+      
+      const conn = await Client.connect()
+      const sql = `UPDATE users SET username= $1, fisrtname= $2,lastname= $3 ,password_digest= $4 , WHERE id = $5 RETURNING *`
+
+
+      const hash = bcrypt.hashSync(
+        u.password + pepper,
+        parseInt(saltRounds as string)
+      );
+
+      const result = await conn.query(sql, [u.username,u.firstname,u.lastname, hash, u.id])
+      const user = result.rows[0]
+
+      conn.release()
+
+      return user
+    } catch(err) {
+      throw new Error(`unable update user (${u.username}): ${err}`)
     } 
   }
 

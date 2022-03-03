@@ -120,6 +120,32 @@ var Users = /** @class */ (function () {
             });
         });
     };
+    Users.prototype.update = function (u) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, hash, result, user, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "UPDATE users SET username= $1 ,password= $2 , WHERE id = $3 RETURNING *";
+                        hash = bcrypt_1.default.hashSync(u.password + pepper, parseInt(saltRounds));
+                        return [4 /*yield*/, conn.query(sql, [u.username, hash, u.id])];
+                    case 2:
+                        result = _a.sent();
+                        user = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, user];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("unable update user (".concat(u.username, "): ").concat(err_4));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Users.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, user;
@@ -148,7 +174,7 @@ var Users = /** @class */ (function () {
     };
     Users.prototype.delete = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, conn, result, User, err_4;
+            var sql, conn, result, User, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -164,8 +190,8 @@ var Users = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, User];
                     case 3:
-                        err_4 = _a.sent();
-                        throw new Error("Could not delete User ".concat(id, ". Error: ").concat(err_4));
+                        err_5 = _a.sent();
+                        throw new Error("Could not delete User ".concat(id, ". Error: ").concat(err_5));
                     case 4: return [2 /*return*/];
                 }
             });
