@@ -42,7 +42,7 @@ describe("User Model", () => {
     //   parseInt(saltRounds as string)
     // );
 
-    expect([result.id,result.username]).toEqual(['1','ahmed',]);
+    expect([result.id,result.username]).toEqual(['1','ahmed']);
   });
 
   it('is a show method which should return the correct user', async () => {

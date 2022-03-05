@@ -1,4 +1,4 @@
-import { DashboardQueries } from './../../models/services/dashboard';
+import { DashboardQueries } from '../../models/services/dashboard';
 import {  Orders } from "../../models/order";;
 import { gallery } from "../../models/gallery";
 import { Users } from "../../models/user";
@@ -12,29 +12,32 @@ const ustore = new Users();
 
 describe("Dashboard Model", () => {
 
-  beforeAll(async () => {
-    await ustore.create({
-      username: 'naira',
-      firstname: 'naira',
-      lastname: 'ahmed',
-      password: 'password'})
-  
+  beforeAll(async (done) => {
+
       await astore.create({
       title: 'monaliza',
       artist: 'davanci',
       category: 'Renaissance',
       price: 6})
+
+      await ustore.create({
+        username: 'ahmed',
+        firstname: 'naira',
+        lastname: 'ahmed',
+        password: 'password'})
   
       await store.create({
         status: 'complete',
         user_id: '1',
       });
+
+      done()
   })
 
   it('is a get completed order method that should return the correct completed orders', async () => {
     const result = await dashboard.completedOrder()
 
-      expect(result).toEqual([{ firstname: 'naira', status: 'complete' }])
+      expect(result[0]).toEqual({ username: 'ahmed', status: 'complete' })
   });
 
   afterAll(async function clearTestData () {

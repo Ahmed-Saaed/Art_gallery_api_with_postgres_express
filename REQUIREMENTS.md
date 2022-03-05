@@ -8,25 +8,33 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products(Art pieces)
 
-- Index: get (localhost:3000/art)
-- Show: get (localhost:3000/art/:id)
-- Create [token required]: post(localhost:3000/art) token:
-- delete delete (localhost:3000/art/:id)
-- [OPTIONAL] Top 5 most popular products
+**user token**: `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMSIsInVzZXJuYW1lIjoiYWhtZWQiLCJmaXJzdG5hbWUiOiJhaG1lZCIsImxhc3RuYW1lIjoic2FhZWQiLCJwYXNzd29yZF9kaWdlc3QiOiIkMmIkMTAkOWl1RnlyN2FPWEdMbmtWZ0RTcEpKLm1aMEYuQkZBVHpnbHp2S1dOZ2oycjBmSUlQaXVka3kifSwiaWF0IjoxNjQ2NTE1MDYwfQ.3TTbJxo5RR-RCER0G_CVLSUm0HsecjkA0kB_L6akjMU"`
+
+- `Index`: get (localhost:3000/art)
+- `Show`: get (localhost:3000/art/:id)
+- `update` [token required]: put (localhost:3000/art/:id)
+- `Create` [token required]: post (localhost:3000/art)
+- `delete` [token required]: delete (localhost:3000/art/:id)
+
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
 
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- `Index` [token required]: get (localhost:3000/users)
+- `Show` [token required]: get (localhost:3000/users/:id)
+- `Create` [token required]: post (localhost:3000/users)
+- `delete`: delete (localhost:3000/users/:id) **`kindly reminder: don't delete the user with id=1 as this is provided token`**
+- `update`: put (localhost:3000/users/:id)
+- `authenticate`: post (localhost:3000/users/authenticate)
 
 #### Orders
 
 - Current Order by user (args: user id)[token required]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
-## Data Shapes
+## Database schema
+
+[DBschema](./database schema.png)
 
 #### Product
 
