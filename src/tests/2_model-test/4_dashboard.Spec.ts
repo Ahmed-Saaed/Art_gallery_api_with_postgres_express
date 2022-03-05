@@ -44,5 +44,6 @@ describe("Dashboard Model", () => {
     let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
     await dbMigrate.reset();
     await dbMigrate.up();
+    await dbMigrate.down();
   });
 });

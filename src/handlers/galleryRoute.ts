@@ -11,6 +11,7 @@ const store = new gallery();
 const galleryRoutes = (Art: express.Application) => {
   Art.get('/art', index)
   Art.get('/art/:id', show)
+  Art.get('/art/:category', filter)
   Art.post('/art', verifyAuthToken, create)
   Art.delete('/art/:id', verifyAuthToken, destroy)
   Art.put('/art/:id', verifyAuthToken, update)
@@ -24,6 +25,10 @@ const index = async(_req:Request , res:Response) => {
 
 const show = async (req: Request, res: Response) => {
   const ArtPiece = await store.show(parseInt(req.params.id))
+  res.json(ArtPiece)
+}
+const filter = async (req: Request, res: Response) => {
+  const ArtPiece = await store.filter(req.params.category)
   res.json(ArtPiece)
 }
 

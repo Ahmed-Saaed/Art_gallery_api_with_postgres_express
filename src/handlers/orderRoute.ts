@@ -1,15 +1,17 @@
 import express, { Request, Response } from 'express';
 import {Order, Orders} from '../models/order';
+import verifyAuthToken from '../middlewares/verifyAuth';
+
 
 const store = new Orders();
 
 const orderRoutes = (app: express.Application) => {
   app.get('/orders', index)
   app.get('/orders/:id', show)
-  app.post('/orders', create)
-  app.delete('/orders/:id', destroy)
+  app.post('/orders',verifyAuthToken, create)
+  app.delete('/orders/:id',verifyAuthToken, destroy) 
   // add product
-  app.post('/orders/:id/products', addProduct)
+  app.post('/orders/:id/products',verifyAuthToken, addProduct)
 }
 
 const index = async(_req:Request , res:Response) => {

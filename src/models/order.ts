@@ -43,6 +43,22 @@ export class Orders {
     }
   }
 
+  // async currentOrder(user_id:string): Promise<Order> {
+  //   try {
+  //   const sql = 'SELECT * FROM orders WHERE id=($1)'
+  //   // @ts-ignore
+  //   const conn = await Client.connect()
+
+  //   const result = await conn.query(sql, [user_id])
+
+  //   conn.release()
+
+  //   return result.rows[0]
+  //   } catch (err) {
+  //       throw new Error(`Could not find Orders ${user_id}. Error: ${err}`)
+  //   }
+  // }
+
   async create(o: Order): Promise<Order> {
       try {
     const sql = 'INSERT INTO orders (status, user_id) VALUES ($1, $2) RETURNING *'

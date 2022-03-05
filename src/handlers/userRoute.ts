@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { User , Users } from '../models/user';
 import jwt,{Secret} from "jsonwebtoken";
+import verifyAuthToken from '../middlewares/verifyAuth';
+
 
 
 const store = new Users();
@@ -9,10 +11,10 @@ const store = new Users();
 const userRoutes = (app: express.Application) => {
   app.get('/users', index)
   app.get('/users/:id', show)
-  app.post('/users', create)
-  app.delete('/users/:id', destroy) 
-  app.put('/users/:id', update)
-  app.post('/users/authenticate', authenticate)
+  app.post('/users', verifyAuthToken, create)
+  app.delete('/users/:id',verifyAuthToken, destroy) 
+  app.put('/users/:id',verifyAuthToken, update)
+  app.post('/users/authenticate', authenticate) 
 }
 
 

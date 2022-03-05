@@ -22,6 +22,19 @@ export class gallery {
       throw new Error(`cannot get the ArtPiece ${err}`)
     }
   }
+
+  async filter(category:string):Promise<ArtPiece[]>{
+    try{
+      // @ts-ignore
+      const conn = await Client.connect();
+      const sql = `select * from gallery where category =$1`
+      const result = await conn.query(sql, [category])
+      conn.release()
+      return result.rows
+    }catch (err){
+      throw new Error(`cannot get the ArtPiece ${err}`)
+    }
+  }
   async show(id:number): Promise<ArtPiece> {
     try {
     const sql = 'SELECT * FROM gallery WHERE id=($1)'
