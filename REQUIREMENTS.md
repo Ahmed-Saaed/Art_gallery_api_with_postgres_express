@@ -23,18 +23,24 @@ These are the notes from a meeting with the frontend developer that describe wha
 - `Index` [token required]: get (localhost:3000/users)
 - `Show` [token required]: get (localhost:3000/users/:id)
 - `Create` [token required]: post (localhost:3000/users)
-- `delete`: delete (localhost:3000/users/:id) **`kindly reminder: don't delete the user with id=1 as this is provided token`**
+- `delete`: delete (localhost:3000/users/:id) **`kindly reminder: don't delete the user with id=1 as this is the provided token`**
 - `update`: put (localhost:3000/users/:id)
 - `authenticate`: post (localhost:3000/users/authenticate)
 
 #### Orders
 
+- `Index`: get (localhost:3000/art)
+- `Show`: get (localhost:3000/art/:id)
+- `Create` [token required]: post (localhost:3000/art)
+- `delete` [token required]: delete (localhost:3000/art/:id)
+- `add to cart`: post (localhost:3000/art/:id/products)
+
 - Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- `Completed Orders`: get(localhost:3000/completed)
 
 ## Database schema
 
-[DBschema](./database schema.png)
+[DBschema](./database_schema.png)
 
 #### Product
 
