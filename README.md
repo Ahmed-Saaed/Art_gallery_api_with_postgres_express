@@ -20,14 +20,14 @@ a Node and Express api that provide a crud system / dashboard for postgres `gall
 
 ### dotenv variables (for the reviewer)
 
-POSTGRES_HOST = 127.0.0.1
-POSTGRES_USER = postgres
-POSTGRES_DB = gallery
-POSTGRES_TEST_DB = full_stack_test
-POSTGRES_PASSWORD = password123
-ENV = dev
-BCRYPT_PASSWORD = 5m@Rt
-SALT_ROUNDS = 10
-TOKEN_SECRET = Art-sou1
+- POSTGRES_HOST = 127.0.0.1
+- POSTGRES_USER = postgres
+- POSTGRES_DB = gallery
+- POSTGRES_TEST_DB = full_stack_test
+- POSTGRES_PASSWORD = password123
+- ENV = dev
+- BCRYPT_PASSWORD = 5m@Rt
+- SALT_ROUNDS = 10
+- TOKEN_SECRET = Art-sou1
 
 routes' verbs and paths in : [`REQUIREMENTS.md`](./REQUIREMENTS.md)
