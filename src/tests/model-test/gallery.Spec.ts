@@ -1,4 +1,4 @@
-import {ArtPiece, gallery} from '../models/gallery'
+import {ArtPiece, gallery} from '../../models/gallery'
   // @ts-ignore
 import DBMigrate from "db-migrate";
 

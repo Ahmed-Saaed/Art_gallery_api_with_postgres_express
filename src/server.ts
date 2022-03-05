@@ -5,6 +5,7 @@ import cors from 'cors';
 import galleryRoutes from './handlers/galleryRoute';
 import userRoutes from './handlers/userRoute';
 import orderRoutes from './handlers/orderRoute';
+import dashboardRoutes from './handlers/dashboard';
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
@@ -20,6 +21,7 @@ app.use(bodyParser.json())
 galleryRoutes(app);
 userRoutes(app);
 orderRoutes(app)
+dashboardRoutes(app);
 
 app.get('/', function (_req: Request, res: Response) {
     res.send('Hello Artist!')

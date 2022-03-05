@@ -55,7 +55,7 @@ export class Users {
         parseInt(saltRounds as string)
       );
 
-      const result = await conn.query(sql, [u.username, hash])
+      const result = await conn.query(sql, [u.username, u.firstname, u.lastname, hash])
       const user = result.rows[0]
 
       conn.release()
@@ -70,7 +70,7 @@ export class Users {
     try {
       
       const conn = await Client.connect()
-      const sql = `UPDATE users SET username= $1, fisrtname= $2,lastname= $3 ,password_digest= $4 , WHERE id = $5 RETURNING *`
+      const sql = `UPDATE users SET username= $1, firstname= $2, lastname= $3 ,password_digest= $4 WHERE id= $5 RETURNING *`
 
 
       const hash = bcrypt.hashSync(
@@ -90,8 +90,9 @@ export class Users {
   }
 
   async authenticate(username: string, password: string): Promise<User | null> {
+
     const conn = await Client.connect()
-    const sql = 'SELECT password_digest FROM users WHERE username=($1)'
+    const sql = 'SELECT * FROM users WHERE username=($1)'
 
     const result = await conn.query(sql, [username])
 

@@ -2,15 +2,16 @@ import Client from './../database';
 
 
 export type Order = {
-          id?:number;
+          id?:string;
           status:string;
-          userId:number;
+          user_id:string;
 }
 
 export type GalleryOrder = {
+          id?:number;
           quantity:number;
-          ArtId:number;
-          orderId:number;
+          art_id:string;
+          order_id:string;
 }
 
 export class Orders {
@@ -26,7 +27,7 @@ export class Orders {
       throw new Error(`cannot get the Order ${err}`)
     }
   }
-  async show(id:number): Promise<Order> {
+  async show(id:string): Promise<Order> {
     try {
     const sql = 'SELECT * FROM orders WHERE id=($1)'
     // @ts-ignore
@@ -49,7 +50,7 @@ export class Orders {
     const conn = await Client.connect()
 
     const result = await conn
-        .query(sql, [o.status, o.userId])
+        .query(sql, [o.status, o.user_id])
 
     const Order = result.rows[0]
 
@@ -61,14 +62,32 @@ export class Orders {
       }
   }
 
-  async addProduct(quantity: number,  ArtId: number, orderId: number): Promise<GalleryOrder> {
+  async delete(id: string): Promise<Order> {
+    try {
+  const sql = 'DELETE FROM orders WHERE id=($1)'
+  // @ts-ignore
+  const conn = await Client.connect()
+
+  const result = await conn.query(sql, [id])
+
+  const order = result.rows[0]
+
+  conn.release()
+
+  return order
+    } catch (err) {
+        throw new Error(`Could not delete order ${id}. Error: ${err}`)
+    }
+}
+
+  async addProduct(quantity: number,  art_id: string, order_id: string): Promise<GalleryOrder> {
     try {
       const sql = 'INSERT INTO gallery_order (quantity, art_id, order_id) VALUES($1, $2, $3) RETURNING *'
       //@ts-ignore
       const conn = await Client.connect()
 
       const result = await conn
-          .query(sql, [quantity, ArtId, orderId])
+          .query(sql, [quantity, art_id, order_id])
 
       const order = result.rows[0]
 
@@ -76,7 +95,7 @@ export class Orders {
 
       return order
     } catch (err) {
-      throw new Error(`Could not add Art piece ${ArtId} to order ${orderId}: ${err}`)
+      throw new Error(`Could not add Art piece ${art_id} to order ${order_id}: ${err}`)
     }
   }
 }

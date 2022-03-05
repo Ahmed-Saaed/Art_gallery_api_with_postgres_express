@@ -1,13 +1,13 @@
-import {User, Users} from '../models/user'
+import {User, Users} from '../../models/user'
 import bcrypt from 'bcrypt';
 // @ts-ignore
 import DBMigrate from "db-migrate";
 
 const users = new Users();
-const {BCRYPT_PASSWORD:pepper,SALT_ROUNDS:saltRounds} = process.env
 const testPassword  = '1234abc';
 
 describe("User Model", () => {
+
   it('should have an index method', () => {
     expect(users.index).toBeDefined();
   });
@@ -37,61 +37,27 @@ describe("User Model", () => {
       password: testPassword,
     });
 
-    const hash = bcrypt.hashSync(
-      testPassword + pepper, 
-      parseInt(saltRounds as string)
-    );
+    // const hash = bcrypt.hashSync(
+    //   testPassword + pepper, 
+    //   parseInt(saltRounds as string)
+    // );
 
-  expect(result).toEqual(
-    {  
-      id: '1',
-      username: 'ahmed',
-      firstname: 'ahmed',
-      lastname: 'saaed',
-      password: hash,
-    });
+    expect([result.id,result.username]).toEqual(['1','ahmed',]);
   });
 
   it('is a show method which should return the correct user', async () => {
     const result = await users.show("1");
 
-    const sHash = bcrypt.hashSync(
-      testPassword + pepper, 
-      parseInt(saltRounds as string)
-    );
 
-    expect(result).toEqual({
-      id: '1',
-      username: 'ahmed',
-      firstname: 'ahmed',
-      lastname: 'saaed',
-      password: sHash,
-    });
-  });
-
-  it('is a delete method which should remove the user', async () => {
-    users.delete("1");
-    const result = await users.index()
-
-    expect(result).toEqual([]);
+    expect([result.id,result.username]).toEqual(['1','ahmed',]);
   });
 
   it('is an authenticate method which should verfiy the user', async () => {
     const result = await users.authenticate('ahmed', testPassword);
 
-    const aHash = bcrypt.hashSync(
-      testPassword + pepper, 
-      parseInt(saltRounds as string)
-    );
-
-    expect(result).toEqual({  
-      id: '1',
-      username: 'ahmed',
-      firstname: 'ahmed',
-      lastname: 'saaed',
-      password: aHash,
-    });
-  });
+    // @ts-ignore
+    expect(result.username).toEqual('ahmed');
+  }); 
 
   it('is an update method which should update a user', async () => {
     // @ts-ignore
@@ -103,20 +69,17 @@ describe("User Model", () => {
       id: '1',
     });
 
-    const uHash = bcrypt.hashSync(
-      'password' + pepper, 
-      parseInt(saltRounds as string)
-    );
 
-  expect(result).toEqual(
-    {  
-      id: '1',
-      username: 'naira',
-      firstname: 'naira',
-      lastname: 'ahmed',
-      password: uHash,
-    });
+  expect([result.id,result.username]).toEqual(['1','naira']);
   });
+
+  it('is a delete method which should remove the user', async () => {
+    users.delete("1");
+    const result = await users.index()
+
+    expect(result).toEqual([]);
+  });
+
 
   afterAll(async function clearTestData () {
     let dbMigrate = DBMigrate.getInstance(true, { env: "test" });

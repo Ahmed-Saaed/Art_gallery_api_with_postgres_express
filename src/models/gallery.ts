@@ -4,8 +4,8 @@ export type ArtPiece = {
   id ?: string;
   title: string;
   artist:string;
-  price: number;
   category: string;
+  price: number;
 }
 
 

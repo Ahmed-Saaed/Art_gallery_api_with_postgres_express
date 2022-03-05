@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import app from '../server';
+import app from '../../server';
   // @ts-ignore
 import DBMigrate from "db-migrate";
 
@@ -57,6 +57,5 @@ describe('users route endpoints responses', () => {
   afterAll(async function clearTestData () {
     let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
     await dbMigrate.reset();
-    await dbMigrate.up();
   });
 });

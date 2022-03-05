@@ -10,7 +10,7 @@ const userRoutes = (app: express.Application) => {
   app.get('/users', index)
   app.get('/users/:id', show)
   app.post('/users', create)
-  app.delete('/users/:id', destroy)
+  app.delete('/users/:id', destroy) 
   app.put('/users/:id', update)
   app.post('/users/authenticate', authenticate)
 }
@@ -83,7 +83,7 @@ const authenticate = async (_req: Request, res: Response) => {
         // @ts-ignore
       res.json(err + user)
   }
-  }
+}
 
 
 export default userRoutes
