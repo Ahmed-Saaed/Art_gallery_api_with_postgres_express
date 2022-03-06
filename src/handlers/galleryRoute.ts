@@ -12,7 +12,7 @@ const galleryRoutes = (Art: express.Application) => {
   Art.get('/art', index)
   Art.get('/art/:id', show)
   Art.get('/art/:category', filter)
-  Art.post('/art', verifyAuthToken, create)
+  Art.post('/art', create)
   Art.delete('/art/:id', verifyAuthToken, destroy)
   Art.put('/art/:id', verifyAuthToken, update)
 }
