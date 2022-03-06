@@ -10,8 +10,6 @@ const verifyAuthToken = (req: Request, res: Response, next: Express.NextFunction
       const token = authorizationHeader.split(' ')[1]
       console.log(token)
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string)
-      console.log(decoded)
-
       next()
   } catch (error) {
       res.status(401)

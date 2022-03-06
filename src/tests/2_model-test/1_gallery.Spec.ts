@@ -75,7 +75,7 @@ describe("ArtPiece Model", () => {
   });
 
   it('is a delete method which should remove the ArtPiece', async () => {
-    galleryStore.delete("1");
+    await galleryStore.delete("1");
     const result = await galleryStore.index()
 
     expect(result).toEqual([]);

@@ -43,24 +43,64 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 [DBschema](./database_schema.png)
 
-#### Product
+#### Product(gallery)
 
-- id
-- name
-- price
-- category
+Column | Type | Collation | Nullable | Default
+----------+------------------------+-----------+----------+-------------------------------------
+id | bigint | | not null | nextval('gallery_id_seq'::regclass)
+title | character varying(100) | | |
+artist | character varying(100) | | |
+category | character varying(100) | | |
+price | integer
 
-#### User
+#### Users
 
-- id
-- firstName
-- lastName
-- password
+                                        Table "users"
+     Column      |          Type          | Collation | Nullable |              Default
+
+-----------------+------------------------+-----------+----------+-----------------------------------
+id | bigint | | not null | nextval('users_id_seq'::regclass)
+username | character varying(100) | | |
+firstname | character varying(100) | | |
+lastname | character varying(100) | | |
+password_digest | character varying | | |
+
+`Indexes`:
+"users_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+TABLE "orders" CONSTRAINT "orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 #### Orders
 
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+                                      Table "orders"
+
+Column | Type | Collation | Nullable | Default
+---------+-----------------------+-----------+----------+------------------------------------
+id | bigint | | not null | nextval('orders_id_seq'::regclass)
+status | character varying(64) | | |
+user_id | bigint | | |
+
+`Indexes`:
+"orders_pkey" PRIMARY KEY, btree (id)
+`Foreign-key constraints`:
+"orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+Referenced by:
+TABLE "gallery_order" CONSTRAINT "gallery_order_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+### gallery_order
+
+                                   Table "gallery_order"
+
+
+Column | Type | Collation | Nullable | Default
+----------+---------+-----------+----------+-------------------------------------------
+id | integer | | not null | nextval('gallery_order_id_seq'::regclass)
+quantity | integer | | |
+art_id | bigint | | |
+order_id | bigint | | |
+
+`Indexes`:
+"gallery_order_pkey" PRIMARY KEY, btree (id)
+`Foreign-key constraints`:
+"gallery_order_art_id_fkey" FOREIGN KEY (art_id) REFERENCES gallery(id) ON UPDATE CASCADE ON DELETE CASCADE
+"gallery_order_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id) ON UPDATE CASCADE ON DELETE CASCADE

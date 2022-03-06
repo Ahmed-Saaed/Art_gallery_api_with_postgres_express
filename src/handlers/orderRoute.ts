@@ -15,28 +15,39 @@ const orderRoutes = (app: express.Application) => {
 }
 
 const index = async(_req:Request , res:Response) => {
-  const orders = await store.index()
-  res.json(orders)
+  try{
+    const orders = await store.index()
+    res.json(orders)
+  }catch(err){
+    res.status(400)
+    res.json(err)
+  }
 }
 
 const show = async (req: Request, res: Response) => {
-  const order = await store.show(req.params.id)
-  res.json(order)
+  try{
+    const order = await store.show(req.params.id)
+    res.json(order)
+  }catch(err){
+    res.status(400)
+    res.json(err)
+  }
 }
 
 const create = async (req: Request, res: Response) => {
-  try {
-      const order: Order = {
-        status: req.body.status,
-        user_id: req.body.user_id
-      }
 
-        const newOrder = await store.create(order)
-        res.json(newOrder)
-    } catch(err) {
-        res.status(400)
-        res.json(err)
-    }
+  const order: Order = {
+    status: req.body.status,
+    user_id: req.body.user_id
+  }
+  
+  try {
+    const newOrder = await store.create(order)
+    res.json(newOrder)
+  }catch(err) {
+    res.status(400)
+    res.json(err)
+  }
 }
 
 const addProduct = async (req: Request, res: Response) => {
@@ -47,15 +58,20 @@ const addProduct = async (req: Request, res: Response) => {
   try {
     const addedProduct = await store.addProduct(quantity, art_id, order_id)
     res.json(addedProduct)
-  } catch(err) {
+  }catch(err){
     res.status(400)
     res.json(err)
   }
 }
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.params.id as string)
-  res.json(deleted)
+  try{
+    const deleted = await store.delete(req.params.id as string)
+    res.json(deleted)
+  }catch(err){
+    res.status(400)
+    res.json(err)
+  }
 }
 
 

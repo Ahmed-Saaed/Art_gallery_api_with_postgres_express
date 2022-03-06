@@ -2,6 +2,12 @@
 
 a Node and Express api that provide a crud system / dashboard for postgres `gallery` database
 
+## setup the DB (psql terminal)
+
+- psql -U <username>
+- create database `gallery`
+- DB port: 5432
+
 ## Getting Started(run)
 
 - npm install
@@ -30,4 +36,6 @@ a Node and Express api that provide a crud system / dashboard for postgres `gall
 - SALT_ROUNDS = 10
 - TOKEN_SECRET = Art-sou1
 
-routes' verbs and paths in : [`REQUIREMENTS.md`](./REQUIREMENTS.md)
+### the application will be running on **port**: `3000`
+
+all routes' verbs and paths will be found in : [`REQUIREMENTS.md`](./REQUIREMENTS.md)

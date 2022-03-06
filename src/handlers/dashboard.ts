@@ -10,8 +10,13 @@ const dashboardRoutes = (app: express.Application) => {
 const dashboard = new DashboardQueries()
 
 const completedOrder = async (_req: Request, res: Response) => {
+  try{
   const orders = await dashboard.completedOrder()
   res.json(orders)
+  }catch(err){
+    res.status(400)
+    res.json(err)
+  }
 }
 
 
