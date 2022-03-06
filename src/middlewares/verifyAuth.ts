@@ -3,12 +3,14 @@ import jwt, { Secret } from "jsonwebtoken";
 
 
 
-const verifyAuthToken = (req: Request, res: Response, next:Function):void => {
+const verifyAuthToken = (req: Request, res: Response, next: Express.NextFunction):void => {
   try {
       const authorizationHeader:string|undefined = req.headers.authorization
-        // @ts-ignore
+      // @ts-ignore
       const token = authorizationHeader.split(' ')[1]
-      const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret)
+      console.log(token)
+      const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string)
+      console.log(decoded)
 
       next()
   } catch (error) {

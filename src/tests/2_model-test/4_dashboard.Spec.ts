@@ -43,7 +43,6 @@ describe("Dashboard Model", () => {
   afterAll(async function clearTestData () {
     let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
     await dbMigrate.reset();
-    await dbMigrate.up();
     await dbMigrate.down();
   });
 });
